@@ -1,22 +1,24 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
-import WhoToFollow from "@/components/WhoToFollow";
+import { getPosts } from "@/actions/post.action";
 import { getDbUserId } from "@/actions/user.action";
-import { currentUser } from "@clerk/nextjs/server";
 import CreatePost from "@/components/CreatePost";
+import PostCard from "@/components/PostCard";
+import WhoToFollow from "@/components/WhoToFollow";
+import { currentUser } from "@clerk/nextjs/server";
 
 export default async function Home() {
   const user = await currentUser();
-    const dbUserId = await getDbUserId();
-
+  const posts = await getPosts();
+  const dbUserId = await getDbUserId();
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-10 gap-6">
       <div className="lg:col-span-6">
-      {user ? <CreatePost /> : null}
+        {user ? <CreatePost /> : null}
 
         <div className="space-y-6">
-
+          {posts.map((post) => (
+            <PostCard key={post.id} post={post} dbUserId={dbUserId} />
+          ))}
         </div>
       </div>
 
