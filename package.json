@@ -13,11 +13,16 @@
     "format:fix": "prettier . --fix"
   },
   "lint-staged": {
-    "*.ts": [
-      "npm run lint:fix",
-      "npm run format:fix"
-    ]
-  },
+  "*.ts": [
+    "npm run lint:fix",
+    "npm run format:fix"
+  ],
+  "*.tsx": [
+    "npm run lint:fix",
+    "npm run format:fix"
+  ]
+}
+,
   "dependencies": {
     "@clerk/nextjs": "^6.9.6",
     "@prisma/client": "^6.1.0",
