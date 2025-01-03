@@ -38,6 +38,7 @@ function NotificationsPage() {
       setIsLoading(true);
       try {
         const data = await getNotifications();
+        console.log(data);
         setNotifications(data);
 
         const unreadIds = data.filter((n) => !n.read).map((n) => n.id);
@@ -85,7 +86,7 @@ function NotificationsPage() {
                       {getNotificationIcon(notification.type)}
                       <span>
                         <span className="font-medium">
-                          {notification.creator.name ?? notification.creator.username}
+                          {notification.creator.username ?? notification.creator.name}
                         </span>{" "}
                         {notification.type === "FOLLOW"
                           ? "started following you"
