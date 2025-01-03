@@ -10,16 +10,11 @@ export default tseslint.config({
       project: true,
       tsconfigRootDir: import.meta.dirname,
     },
-  },
-  files: ["**/*.ts"],
-  extends: [
-    eslint.configs.recommended,
-    ...tseslint.configs.recommendedTypeChecked,
-    eslintConfigPrettier,
-  ],
-  rules: {
-    // "no-console": "error",
-    "no-useless-catch": 0,
-    quotes: ["error", "single", { allowTemplateLiterals: true }],
-  },
-});
+    files: ['**/*.ts','**/*.tsx'],
+    extends: [eslint.configs.recommended, ...tseslint.configs.recommendedTypeChecked, eslintConfigPrettier],
+    rules: {
+        // 'no-console': 'error',
+        'no-useless-catch': 0,
+        quotes: ['error', 'single', { allowTemplateLiterals: true }]
+    }
+})
