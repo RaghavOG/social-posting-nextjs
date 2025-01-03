@@ -11,7 +11,7 @@ export default tseslint.config({
             tsconfigRootDir: import.meta.dirname
         }
     },
-    files: ['**/*.ts'],
+    files: ['**/*.ts','**/*.tsx'],
     extends: [eslint.configs.recommended, ...tseslint.configs.recommendedTypeChecked, eslintConfigPrettier],
     rules: {
         'no-console': 'error',
