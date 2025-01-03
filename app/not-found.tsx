@@ -14,8 +14,12 @@ export default function NotFound() {
 
             {/* MESSAGE */}
             <div className="space-y-2">
-              <h1 className="text-2xl font-bold tracking-tight">Page not found</h1>
-              <p className="text-muted-foreground">The Page you&apos;re looking for doesn&apos;t exist.</p>
+              <h1 className="text-2xl font-bold tracking-tight">
+                Page not found
+              </h1>
+              <p className="text-muted-foreground">
+                The Page you&apos;re looking for doesn&apos;t exist.
+              </p>
             </div>
 
             {/* ACTION BUTTONS */}

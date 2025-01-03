@@ -35,7 +35,7 @@ function PostCard({ post, dbUserId }: { post: Post; dbUserId: string | null }) {
   const [isLiking, setIsLiking] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [hasLiked, setHasLiked] = useState(
-    post.likes.some((like) => like.userId === dbUserId)
+    post.likes.some((like) => like.userId === dbUserId),
   );
   const [optimisticLikes, setOptmisticLikes] = useState(post._count.likes);
   const [showComments, setShowComments] = useState(false);

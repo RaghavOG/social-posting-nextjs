@@ -2,7 +2,10 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { getNotifications, markNotificationsAsRead } from "@/actions/notification.action";
+import {
+  getNotifications,
+  markNotificationsAsRead,
+} from "@/actions/notification.action";
 import { NotificationsSkeleton } from "@/components/NotificationSkeleton";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -69,7 +72,9 @@ function NotificationsPage() {
         <CardContent className="p-0">
           <ScrollArea className="h-[calc(100vh-12rem)]">
             {notifications.length === 0 ? (
-              <div className="p-4 text-center text-muted-foreground">No notifications yet</div>
+              <div className="p-4 text-center text-muted-foreground">
+                No notifications yet
+              </div>
             ) : (
               notifications.map((notification) => (
                 <div
@@ -79,25 +84,29 @@ function NotificationsPage() {
                   }`}
                 >
                   <Avatar className="mt-1">
-                    <AvatarImage src={notification.creator.image ?? "/avatar.png"} />
+                    <AvatarImage
+                      src={notification.creator.image ?? "/avatar.png"}
+                    />
                   </Avatar>
                   <div className="flex-1 space-y-1">
                     <div className="flex items-center gap-2">
                       {getNotificationIcon(notification.type)}
                       <span>
                         <span className="font-medium">
-                          {notification.creator.username ?? notification.creator.name}
+                          {notification.creator.username ??
+                            notification.creator.name}
                         </span>{" "}
                         {notification.type === "FOLLOW"
                           ? "started following you"
                           : notification.type === "LIKE"
-                          ? "liked your post"
-                          : "commented on your post"}
+                            ? "liked your post"
+                            : "commented on your post"}
                       </span>
                     </div>
 
                     {notification.post &&
-                      (notification.type === "LIKE" || notification.type === "COMMENT") && (
+                      (notification.type === "LIKE" ||
+                        notification.type === "COMMENT") && (
                         <div className="pl-6 space-y-2">
                           <div className="text-sm text-muted-foreground rounded-md p-2 bg-muted/30 mt-2">
                             <p>{notification.post.content}</p>
@@ -110,16 +119,19 @@ function NotificationsPage() {
                             )}
                           </div>
 
-                          {notification.type === "COMMENT" && notification.comment && (
-                            <div className="text-sm p-2 bg-accent/50 rounded-md">
-                              {notification.comment.content}
-                            </div>
-                          )}
+                          {notification.type === "COMMENT" &&
+                            notification.comment && (
+                              <div className="text-sm p-2 bg-accent/50 rounded-md">
+                                {notification.comment.content}
+                              </div>
+                            )}
                         </div>
                       )}
 
                     <p className="text-sm text-muted-foreground pl-6">
-                      {formatDistanceToNow(new Date(notification.createdAt), { addSuffix: true })}
+                      {formatDistanceToNow(new Date(notification.createdAt), {
+                        addSuffix: true,
+                      })}
                     </p>
                   </div>
                 </div>

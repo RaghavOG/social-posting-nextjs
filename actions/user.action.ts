@@ -23,7 +23,8 @@ export async function syncUser() {
       data: {
         clerkId: userId,
         name: `${user.firstName || ""} ${user.lastName || ""}`,
-        username: user.username ?? user.emailAddresses[0].emailAddress.split("@")[0],
+        username:
+          user.username ?? user.emailAddresses[0].emailAddress.split("@")[0],
         email: user.emailAddresses[0].emailAddress,
         image: user.imageUrl,
       },
@@ -160,4 +161,3 @@ export async function toggleFollow(targetUserId: string) {
     return { success: false, error: "Error toggling follow" };
   }
 }
-

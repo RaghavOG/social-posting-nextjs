@@ -10,10 +10,14 @@
     "prepare": "husky",
     "lint:fix": "eslint --fix",
     "format:check": "prettier . --check",
-    "format:fix": "prettier . --fix"
+    "format:fix": "prettier --write ."
   },
   "lint-staged": {
     "*.ts": [
+      "npm run lint:fix",
+      "npm run format:fix"
+    ],
+    "*.tsx": [
       "npm run lint:fix",
       "npm run format:fix"
     ]
