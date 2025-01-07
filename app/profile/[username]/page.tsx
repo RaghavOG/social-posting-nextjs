@@ -1,3 +1,5 @@
+// app/profile/[username]/page.tsx
+
 import {
   getProfileByUsername,
   getUserLikedPosts,
@@ -7,6 +9,7 @@ import {
 import { notFound } from "next/navigation";
 import ProfilePageClient from "./ProfilePageClient";
 
+// Metadata generation function
 export async function generateMetadata({
   params,
 }: {
@@ -21,11 +24,18 @@ export async function generateMetadata({
   };
 }
 
-async function ProfilePageServer({ params }: { params: { username: string } }) {
+// ProfilePageServer function
+interface ProfilePageProps {
+  params: { username: string };
+}
+
+async function ProfilePageServer({ params }: ProfilePageProps) {
   const user = await getProfileByUsername(params.username);
 
+  // Handle case when user is not found
   if (!user) notFound();
 
+  // Fetch related data concurrently
   const [posts, likedPosts, isCurrentUserFollowing] = await Promise.all([
     getUserPosts(user.id),
     getUserLikedPosts(user.id),
@@ -41,4 +51,5 @@ async function ProfilePageServer({ params }: { params: { username: string } }) {
     />
   );
 }
+
 export default ProfilePageServer;
