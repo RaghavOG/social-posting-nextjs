@@ -137,10 +137,10 @@ function PostCard({ post, dbUserId }: { post: Post; dbUserId: string | null }) {
               <Image
                 src={post.image}
                 alt="Post content"
-                className="w-full h-auto object-cover"
-                width={500} // Provide width
+                className=" object-cover"
+                width={300} // Provide width
                 height={300} // Provide height
-                layout="responsive" // To make it responsive
+                sizes="(max-width: 768px) 100vw, 50vw" 
               />
             </div>
           )}

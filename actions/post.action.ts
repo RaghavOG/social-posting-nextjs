@@ -3,26 +3,88 @@
 import prisma from "@/lib/prisma";
 import { getDbUserId } from "./user.action";
 import { revalidatePath } from "next/cache";
+import { v2 as cloudinary } from 'cloudinary';
 
-export async function createPost(content: string, image: string) {
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
+// Add a new type for the incoming form data
+type CreatePostData = {
+  content: string;
+  image?: string; // Base64 string
+};
+
+export async function createPost(formData: CreatePostData) {
+  console.log("Server: Starting createPost", { contentLength: formData.content?.length, hasImage: !!formData.image });
+  
   try {
     const userId = await getDbUserId();
+    
+    if (!userId) {
+      console.error("Server: Authentication failed - no user ID");
+      return { success: false, error: "User not authenticated" };
+    }
 
-    if (!userId) return;
+    let imageUrl = null;
 
+    if (formData.image) {
+      try {
+        console.log("Server: Processing image upload");
+        // Convert base64 to buffer
+        const buffer = Buffer.from(formData.image.split(',')[1], 'base64');
+
+        const cloudinaryResponse = await new Promise((resolve, reject) => {
+          const uploadStream = cloudinary.uploader.upload_stream(
+            { 
+              resource_type: "image", 
+              folder: "posts",
+              allowed_formats: ["jpg", "jpeg", "png", "gif"],
+              max_file_size: 10000000 // 10MB
+            },
+            (error, result) => {
+              if (error) {
+                console.error("Server: Cloudinary upload failed", error);
+                reject(error);
+              } else {
+                resolve(result);
+              }
+            }
+          );
+          
+          uploadStream.end(buffer);
+        });
+
+        // @ts-ignore
+        imageUrl = cloudinaryResponse.secure_url;
+        console.log("Server: Image uploaded successfully", imageUrl);
+      } catch (error) {
+        console.error("Server: Image upload failed", error);
+        return { success: false, error: "Failed to upload image" };
+      }
+    }
+
+    console.log("Server: Creating post in database");
     const post = await prisma.post.create({
       data: {
-        content,
-        image,
+        content: formData.content,
+        image: imageUrl,
         authorId: userId,
       },
     });
 
-    revalidatePath("/"); // purge the cache for the home page
+    console.log("Server: Post created successfully", post.id);
+    revalidatePath("/");
     return { success: true, post };
   } catch (error) {
-    console.error("Failed to create post:", error);
-    return { success: false, error: "Failed to create post" };
+    console.error("Server: Failed to create post:", error);
+    return { 
+      success: false, 
+      error: error instanceof Error ? error.message : "Failed to create post" 
+    };
   }
 }
 
