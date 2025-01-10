@@ -1,5 +1,5 @@
 // app/profile/[username]/page.tsx
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import {
   getProfileByUsername,
   getUserLikedPosts,
@@ -9,17 +9,15 @@ import {
 import { notFound } from "next/navigation";
 import ProfilePageClient from "./ProfilePageClient";
 
-// Define the params type for the page
-interface PageProps {
+interface Props {
   params: { username: string };
-  searchParams: { [key: string]: string | string[] | undefined };
 }
 
-// Metadata generation function
-export async function generateMetadata({
-  params,
-}: PageProps): Promise<Metadata> {
+export async function generateMetadata(
+  { params }: Props
+): Promise<Metadata> {
   const user = await getProfileByUsername(params.username);
+  
   if (!user) {
     return {
       title: "User Not Found",
@@ -33,14 +31,11 @@ export async function generateMetadata({
   };
 }
 
-// Page component
-export default async function Page({ params }: PageProps) {
+export default async function Page({ params }: Props) {
   const user = await getProfileByUsername(params.username);
 
-  // Handle case when user is not found
   if (!user) notFound();
 
-  // Fetch related data concurrently
   const [posts, likedPosts, isCurrentUserFollowing] = await Promise.all([
     getUserPosts(user.id),
     getUserLikedPosts(user.id),
