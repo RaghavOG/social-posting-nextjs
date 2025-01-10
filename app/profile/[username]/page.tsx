@@ -1,4 +1,5 @@
-
+// app/profile/[username]/page.tsx
+import { Metadata } from "next";
 import {
   getProfileByUsername,
   getUserLikedPosts,
@@ -8,26 +9,23 @@ import {
 import { notFound } from "next/navigation";
 import ProfilePageClient from "./ProfilePageClient";
 
-type ProfileParams = {
-  params: {
-    username: string;
-  };
-  searchParams?: { [key: string]: string | string[] | undefined };
-};
+// Define the params type for the page
+interface PageProps {
+  params: { username: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+}
 
 // Metadata generation function
 export async function generateMetadata({
   params,
-}: {
-  params: { username: string };
-}) {
+}: PageProps): Promise<Metadata> {
   const user = await getProfileByUsername(params.username);
   if (!user) {
     return {
       title: "User Not Found",
       description: "The requested profile could not be found.",
     };
-  };
+  }
 
   return {
     title: `${user.name ?? user.username}`,
@@ -35,8 +33,8 @@ export async function generateMetadata({
   };
 }
 
-// ProfilePageServer function
-async function ProfilePageServer({ params }: ProfileParams) {
+// Page component
+export default async function Page({ params }: PageProps) {
   const user = await getProfileByUsername(params.username);
 
   // Handle case when user is not found
@@ -58,5 +56,3 @@ async function ProfilePageServer({ params }: ProfileParams) {
     />
   );
 }
-
-export default ProfilePageServer;
