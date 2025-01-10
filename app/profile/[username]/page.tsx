@@ -1,4 +1,3 @@
-// app/profile/[username]/page.tsx
 
 import {
   getProfileByUsername,
@@ -9,6 +8,13 @@ import {
 import { notFound } from "next/navigation";
 import ProfilePageClient from "./ProfilePageClient";
 
+type ProfileParams = {
+  params: {
+    username: string;
+  };
+  searchParams?: { [key: string]: string | string[] | undefined };
+};
+
 // Metadata generation function
 export async function generateMetadata({
   params,
@@ -16,7 +22,12 @@ export async function generateMetadata({
   params: { username: string };
 }) {
   const user = await getProfileByUsername(params.username);
-  if (!user) return;
+  if (!user) {
+    return {
+      title: "User Not Found",
+      description: "The requested profile could not be found.",
+    };
+  };
 
   return {
     title: `${user.name ?? user.username}`,
@@ -25,11 +36,7 @@ export async function generateMetadata({
 }
 
 // ProfilePageServer function
-interface ProfilePageProps {
-  params: { username: string };
-}
-
-async function ProfilePageServer({ params }: ProfilePageProps) {
+async function ProfilePageServer({ params }: ProfileParams) {
   const user = await getProfileByUsername(params.username);
 
   // Handle case when user is not found
