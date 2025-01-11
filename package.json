@@ -4,13 +4,16 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
     "prepare": "husky",
     "format:check": "prettier . --check",
-    "format:fix": "prettier --write ."
+    "format:fix": "prettier --write .",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate deploy",
+    "db:push": "prisma db push"
   },
   "lint-staged": {
     "*.ts": [
@@ -25,7 +28,7 @@
   "dependencies": {
     "@clerk/clerk-react": "^5.21.0",
     "@clerk/nextjs": "^6.9.6",
-    "@prisma/client": "^6.1.0",
+    "@prisma/client": "^6.2.1",
     "@radix-ui/react-alert-dialog": "^1.1.4",
     "@radix-ui/react-avatar": "^1.1.2",
     "@radix-ui/react-dialog": "^1.1.4",
@@ -67,6 +70,7 @@
     "lint-staged": "^15.3.0",
     "postcss": "^8",
     "prettier": "3.4.2",
+    "prisma": "^6.2.1",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.19.0"

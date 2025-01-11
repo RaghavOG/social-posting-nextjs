@@ -10,6 +10,9 @@ export default async function Home() {
   const posts = await getPosts();
   const dbUserId = await getDbUserId();
 
+  const age : number = Math.floor(Math.random() * 1000);
+    console.log(age)
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-10 gap-6">
       <div className="lg:col-span-6">

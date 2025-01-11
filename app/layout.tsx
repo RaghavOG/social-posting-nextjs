@@ -8,6 +8,9 @@ import Sidebar from "@/components/Sidebar";
 import { Toaster } from "react-hot-toast";
 import ScrollProgressBar from "@/components/ScrollProgressBar";
 
+
+
+
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
