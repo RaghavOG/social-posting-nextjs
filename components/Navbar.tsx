@@ -21,7 +21,7 @@ const Navbar = async () => {
             >
               Socially
               {user && (
-                <span className="ml-2 text-lg font-semibold text-secondary-foreground/70 font-mono">
+                <span className="hidden md:block ml-2 text-lg font-semibold text-secondary-foreground/70 font-mono">
                   @{userEmail}
                 </span>
               )}
